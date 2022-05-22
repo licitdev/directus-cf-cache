@@ -1,0 +1,24 @@
+{
+	"name": "directus-cf-cache",
+	"version": "0.0.1",
+	"description": "",
+	"private": true,
+	"scripts": {
+		"build": "cfw build",
+		"deploy": "cfw deploy"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/licitdev/directus-cf-cache.git"
+	},
+	"author": "ian <licitdev@gmail.com>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/licitdev/directus-cf-cache/issues"
+	},
+	"homepage": "https://github.com/licitdev/directus-cf-cache#readme",
+	"devDependencies": {
+		"cfw": "0.3.0",
+		"worktop": "^0.7.3"
+	}
+}
