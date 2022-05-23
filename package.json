@@ -5,7 +5,8 @@
 	"private": true,
 	"scripts": {
 		"build": "cfw build",
-		"deploy": "cfw deploy"
+		"deploy": "cfw deploy",
+		"postinstall": "patch-package"
 	},
 	"repository": {
 		"type": "git",
@@ -19,6 +20,8 @@
 	"homepage": "https://github.com/licitdev/directus-cf-cache#readme",
 	"devDependencies": {
 		"cfw": "0.3.0",
+		"dotenv": "^16.0.1",
+		"patch-package": "^6.4.7",
 		"worktop": "^0.7.3"
 	}
 }
