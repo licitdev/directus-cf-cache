@@ -5,14 +5,16 @@ export interface Item {
 }
 
 export interface CFCacheOptions {
-	preset_requests: {
-		operation: 'list' | 'get';
-		collection: string;
-		key: string;
-		enabled: boolean;
-		file_paths: string | null;
-		query_params: any;
-	}[];
+	preset_requests: PresetRequest[];
+}
+
+export interface PresetRequest {
+	operation: 'list' | 'get';
+	collection: string;
+	key: string;
+	enabled: boolean;
+	file_paths: string | null;
+	query_params: any;
 }
 
 const toPrefix = (collection: string, key: string) => `collection::${collection}::key::${key}::pk::`;
