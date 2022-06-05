@@ -8,6 +8,12 @@ import { get } from 'lodash';
 const TABLE_CF_CACHE_OPTIONS = 'cf_cache_options';
 
 async function getCFCacheOptions() {
+	const cfCacheOptions = await Items.read(TABLE_CF_CACHE_OPTIONS, '', '');
+
+	if (cfCacheOptions) {
+		return cfCacheOptions;
+	}
+
 	const url = new URL(`${DIRECTUS_SERVER_URL}/items/${TABLE_CF_CACHE_OPTIONS}`);
 
 	url.search = new URLSearchParams({
@@ -20,17 +26,13 @@ async function getCFCacheOptions() {
 	if (response.status === 200) {
 		const responseData = await response.json();
 		if (responseData.data) {
+			await Items.write(TABLE_CF_CACHE_OPTIONS, '', '', responseData.data);
+
 			return responseData.data as CFCacheOptions;
 		}
-	} else {
-		const cfCacheOptions = await Items.read(TABLE_CF_CACHE_OPTIONS, '', '');
-
-		if (!cfCacheOptions) {
-			throw new Error(`Unable to load "${TABLE_CF_CACHE_OPTIONS}" from cache.`);
-		}
-
-		return cfCacheOptions;
 	}
+
+	throw new Error(`Unable to load "${TABLE_CF_CACHE_OPTIONS}".`);
 }
 
 async function saveCFCacheOptions() {
