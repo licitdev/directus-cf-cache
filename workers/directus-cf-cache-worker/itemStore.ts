@@ -5,6 +5,7 @@ export interface Item {
 }
 
 export interface CFCacheOptions {
+	cache_mode: 'origin_priority' | 'cache_priority' | 'origin_only' | 'cache_only';
 	preset_requests: PresetRequest[];
 }
 
