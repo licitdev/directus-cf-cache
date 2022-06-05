@@ -4,8 +4,10 @@ import type { CFCacheOptions, PresetRequest } from './itemStore';
 import type { Webhook } from './webhook';
 import type { Handler } from 'worktop';
 
+const TABLE_CF_CACHE_OPTIONS = 'cf_cache_options';
+
 async function getCFCacheOptions() {
-	const url = new URL(`${DIRECTUS_SERVER_URL}/items/cf_cache_options`);
+	const url = new URL(`${DIRECTUS_SERVER_URL}/items/${TABLE_CF_CACHE_OPTIONS}`);
 
 	url.search = new URLSearchParams({
 		fields: '*.*',
@@ -18,6 +20,32 @@ async function getCFCacheOptions() {
 		const responseData = await response.json();
 		if (responseData.data) {
 			return responseData.data as CFCacheOptions;
+		}
+	} else {
+		const cfCacheOptions = await Items.read(TABLE_CF_CACHE_OPTIONS, '', '');
+
+		if (!cfCacheOptions) {
+			throw new Error(`Unable to load "${TABLE_CF_CACHE_OPTIONS}" from cache.`);
+		}
+
+		return cfCacheOptions;
+	}
+}
+
+async function saveCFCacheOptions() {
+	const url = new URL(`${DIRECTUS_SERVER_URL}/items/${TABLE_CF_CACHE_OPTIONS}`);
+
+	url.search = new URLSearchParams({
+		fields: '*.*',
+		access_token: DIRECTUS_ACCESS_TOKEN,
+	}).toString();
+
+	const response = await fetch(url);
+
+	if (response.status === 200) {
+		const responseData = await response.json();
+		if (responseData.data) {
+			await Items.write(TABLE_CF_CACHE_OPTIONS, '', '', responseData.data);
 		}
 	}
 }
@@ -75,12 +103,16 @@ export const webhook: Handler = async function (req, res) {
 		case 'items.create':
 			if (!body.key) return res.send(400, { message: 'Invalid webhook request.' });
 
-			for (const preset of cfCacheOptions.preset_requests) {
-				if (preset.collection === body.collection) {
-					if (preset.operation === 'get') {
-						await saveItem(preset, body.collection, preset.key, body.key);
-					} else if (preset.operation === 'list') {
-						await saveList(preset, body.collection, preset.key);
+			if (body.collection === TABLE_CF_CACHE_OPTIONS) {
+				await saveCFCacheOptions();
+			} else {
+				for (const preset of cfCacheOptions.preset_requests) {
+					if (preset.collection === body.collection) {
+						if (preset.operation === 'get') {
+							await saveItem(preset, body.collection, preset.key, body.key);
+						} else if (preset.operation === 'list') {
+							await saveList(preset, body.collection, preset.key);
+						}
 					}
 				}
 			}
@@ -88,12 +120,16 @@ export const webhook: Handler = async function (req, res) {
 		case 'items.update':
 			if (!body.keys) return res.send(400, { message: 'Invalid webhook request.' });
 
-			for (const preset of cfCacheOptions.preset_requests) {
-				if (preset.collection === body.collection) {
-					if (preset.operation === 'get') {
-						await saveItem(preset, body.collection, preset.key, body.keys);
-					} else if (preset.operation === 'list') {
-						await saveList(preset, body.collection, preset.key);
+			if (body.collection === TABLE_CF_CACHE_OPTIONS) {
+				await saveCFCacheOptions();
+			} else {
+				for (const preset of cfCacheOptions.preset_requests) {
+					if (preset.collection === body.collection) {
+						if (preset.operation === 'get') {
+							await saveItem(preset, body.collection, preset.key, body.keys);
+						} else if (preset.operation === 'list') {
+							await saveList(preset, body.collection, preset.key);
+						}
 					}
 				}
 			}
