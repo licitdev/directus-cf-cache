@@ -13,7 +13,7 @@ export async function write(pk: string, asset: any) {
 export async function read(pk: string) {
 	const kvKey = toPrefix(pk);
 	try {
-		return await DB.read(DIRECTUS_CF_CACHE_KV, kvKey);
+		return await DB.read(DIRECTUS_CF_CACHE_KV, kvKey, 'stream');
 	} catch (err) {}
 }
 

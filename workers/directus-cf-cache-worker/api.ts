@@ -3,6 +3,7 @@ import * as Assets from './assetStore';
 import type { CFCacheOptions, PresetRequest } from './itemStore';
 import type { Webhook } from './webhook';
 import type { Handler } from 'worktop';
+import { get } from 'lodash';
 
 const TABLE_CF_CACHE_OPTIONS = 'cf_cache_options';
 
@@ -66,8 +67,8 @@ export const listItems: Handler = async function (req, res) {
 };
 
 /**
- * GET /fetch/:collection/:item
- * GET /fetch/:collection/:item/:key
+ * GET /get/:collection/:pk
+ * GET /get/:collection/:pk/:key
  */
 export const getItem: Handler = async function (req, res) {
 	const { collection, key, pk } = req.params;
@@ -78,6 +79,21 @@ export const getItem: Handler = async function (req, res) {
 	}
 
 	res.send(200, data);
+};
+
+/**
+ * GET /assets/:pk
+ */
+export const getAsset: Handler = async function (req, res) {
+	const { pk } = req.params;
+	const asset = await Assets.read(pk);
+
+	if (!asset) {
+		return res.send(404);
+	}
+
+	res.writeHead(200);
+	res.end(asset);
 };
 
 /**
@@ -223,6 +239,22 @@ async function saveItem(
 
 	if (!result) {
 		throw new Error(`Unable to save item for collection "${collection}", key "${key}" and pk "${pk}"`);
+	}
+
+	if (preset.file_paths) {
+		for (const path of preset.file_paths) {
+			const assetId = get(result, path);
+			if (assetId) {
+				const assetUrl = new URL(`${DIRECTUS_SERVER_URL}/assets/${assetId}`);
+				assetUrl.search = new URLSearchParams({
+					access_token: DIRECTUS_ACCESS_TOKEN,
+				}).toString();
+				const assetResponse = await fetch(assetUrl);
+				if (assetResponse.status === 200) {
+					await Assets.write(assetId, await assetResponse.body);
+				}
+			}
+		}
 	}
 }
 

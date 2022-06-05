@@ -22,6 +22,7 @@ API.add('GET', '/list/:collection', api.listItems);
 API.add('GET', '/list/:collection/:key', api.listItems);
 API.add('GET', '/get/:collection/:pk', api.getItem);
 API.add('GET', '/get/:collection/:pk/:key', api.getItem);
+API.add('GET', '/assets/:pk', api.getAsset);
 API.add('POST', '/webhook', api.webhook);
 
 listen(API.run);

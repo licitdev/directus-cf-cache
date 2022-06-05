@@ -13,7 +13,7 @@ export interface PresetRequest {
 	collection: string;
 	key: string;
 	enabled: boolean;
-	file_paths: string | null;
+	file_paths: string[] | null;
 	query_params: any;
 }
 
