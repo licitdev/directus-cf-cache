@@ -7,52 +7,6 @@ import { get } from 'lodash';
 
 const TABLE_CF_CACHE_OPTIONS = 'cf_cache_options';
 
-async function getCFCacheOptions() {
-	const cfCacheOptions = await Items.read(TABLE_CF_CACHE_OPTIONS, '', '');
-
-	if (cfCacheOptions) {
-		return cfCacheOptions;
-	}
-
-	const url = new URL(`${DIRECTUS_SERVER_URL}/items/${TABLE_CF_CACHE_OPTIONS}`);
-
-	url.search = new URLSearchParams({
-		fields: '*.*',
-		access_token: DIRECTUS_ACCESS_TOKEN,
-	}).toString();
-
-	const response = await fetch(url);
-
-	if (response.status === 200) {
-		const responseData = await response.json();
-		if (responseData.data) {
-			await Items.write(TABLE_CF_CACHE_OPTIONS, '', '', responseData.data);
-
-			return responseData.data as CFCacheOptions;
-		}
-	}
-
-	throw new Error(`Unable to load "${TABLE_CF_CACHE_OPTIONS}".`);
-}
-
-async function saveCFCacheOptions() {
-	const url = new URL(`${DIRECTUS_SERVER_URL}/items/${TABLE_CF_CACHE_OPTIONS}`);
-
-	url.search = new URLSearchParams({
-		fields: '*.*',
-		access_token: DIRECTUS_ACCESS_TOKEN,
-	}).toString();
-
-	const response = await fetch(url);
-
-	if (response.status === 200) {
-		const responseData = await response.json();
-		if (responseData.data) {
-			await Items.write(TABLE_CF_CACHE_OPTIONS, '', '', responseData.data);
-		}
-	}
-}
-
 /**
  * GET /list/:collection
  * GET /list/:collection/:key
@@ -171,6 +125,52 @@ export const webhook: Handler = async function (req, res) {
 
 	return res.send(200, { message: 'OK' });
 };
+
+async function getCFCacheOptions() {
+	const cfCacheOptions = await Items.read(TABLE_CF_CACHE_OPTIONS, '', '');
+
+	if (cfCacheOptions) {
+		return cfCacheOptions;
+	}
+
+	const url = new URL(`${DIRECTUS_SERVER_URL}/items/${TABLE_CF_CACHE_OPTIONS}`);
+
+	url.search = new URLSearchParams({
+		fields: '*.*',
+		access_token: DIRECTUS_ACCESS_TOKEN,
+	}).toString();
+
+	const response = await fetch(url);
+
+	if (response.status === 200) {
+		const responseData = await response.json();
+		if (responseData.data) {
+			await Items.write(TABLE_CF_CACHE_OPTIONS, '', '', responseData.data);
+
+			return responseData.data as CFCacheOptions;
+		}
+	}
+
+	throw new Error(`Unable to load "${TABLE_CF_CACHE_OPTIONS}".`);
+}
+
+async function saveCFCacheOptions() {
+	const url = new URL(`${DIRECTUS_SERVER_URL}/items/${TABLE_CF_CACHE_OPTIONS}`);
+
+	url.search = new URLSearchParams({
+		fields: '*.*',
+		access_token: DIRECTUS_ACCESS_TOKEN,
+	}).toString();
+
+	const response = await fetch(url);
+
+	if (response.status === 200) {
+		const responseData = await response.json();
+		if (responseData.data) {
+			await Items.write(TABLE_CF_CACHE_OPTIONS, '', '', responseData.data);
+		}
+	}
+}
 
 async function saveList(preset: PresetRequest, collection: string, key: string) {
 	if (!key) key = '';
