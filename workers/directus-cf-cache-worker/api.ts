@@ -28,7 +28,11 @@ async function getCFCacheOptions() {
  */
 export const listItems: Handler = async function (req, res) {
 	const { collection, key } = req.params;
-	const data = await Items.read(collection, key, '');
+	const data = await Items.read(collection, key ?? '', '');
+
+	if (!data) {
+		return res.send(404);
+	}
 
 	res.send(200, data);
 };
@@ -39,7 +43,11 @@ export const listItems: Handler = async function (req, res) {
  */
 export const getItem: Handler = async function (req, res) {
 	const { collection, key, pk } = req.params;
-	const data = await Items.read(collection, key, pk);
+	const data = await Items.read(collection, key ?? '', pk);
+
+	if (!data) {
+		return res.send(404);
+	}
 
 	res.send(200, data);
 };
