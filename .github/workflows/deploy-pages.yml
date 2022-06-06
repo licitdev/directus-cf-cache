@@ -1,0 +1,24 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - app/**
+
+defaults:
+  run:
+    working-directory: app
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy Page
+    steps:
+      - name: Invoke Deploy Master Hook
+        uses: distributhor/workflow-webhook@v2
+        env:
+          webhook_url: ${{ secrets.CLOUDFLARE_PAGES_WEBHOOK_URL }}
+          webhook_secret: "no_secret_required"
