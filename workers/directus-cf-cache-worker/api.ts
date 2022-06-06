@@ -29,7 +29,7 @@ export const listItems: Handler = async function (req, res) {
 
 	const fetchOrigin = async () => {
 		const preset = cfCacheOptions.preset_requests.find(
-			(p: PresetRequest) => p.collection === collection && p.key === (key ?? '') && p.operation === 'list'
+			(p: PresetRequest) => p.collection === collection && p.key === (key ?? null) && p.operation === 'list'
 		);
 
 		if (!preset) return null;
@@ -121,7 +121,7 @@ export const getItem: Handler = async function (req, res) {
 
 	const fetchOrigin = async () => {
 		const preset = cfCacheOptions.preset_requests.find(
-			(p: PresetRequest) => p.collection === collection && p.key === (key ?? '') && p.operation === 'get'
+			(p: PresetRequest) => p.collection === collection && p.key === (key ?? null) && p.operation === 'get'
 		);
 
 		if (!preset) return null;
