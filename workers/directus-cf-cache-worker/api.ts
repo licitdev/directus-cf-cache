@@ -461,18 +461,36 @@ async function saveItem(
 	}
 
 	if (preset.file_paths) {
-		for (const path of preset.file_paths) {
-			const assetId = get(result, path);
-			if (assetId) {
-				const assetUrl = new URL(`${DIRECTUS_SERVER_URL}/assets/${assetId}`);
-				assetUrl.search = new URLSearchParams({
-					access_token: DIRECTUS_ACCESS_TOKEN,
-				}).toString();
-				const assetResponse = await fetch(assetUrl);
-				if (assetResponse.status === 200) {
-					await Assets.write(assetId, await assetResponse.body);
+		const checkAssetRecursive = async (items: any, filePath: string) => {
+			const splits = filePath.split('.');
+			if (Array.isArray(items[splits[0]])) {
+				const currentPath = splits[0];
+				splits.shift();
+				const newPath = splits.join('.');
+				for (const item of items[currentPath]) {
+					await checkAssetRecursive(item, newPath);
+				}
+			} else if (typeof splits[0] === 'object') {
+				const currentPath = splits[0];
+				splits.shift();
+				await checkAssetRecursive(items[currentPath], splits.join('.'));
+			} else if (typeof splits[0] === 'string') {
+				const assetId = get(items, splits[0]);
+				if (assetId) {
+					const assetUrl = new URL(`${DIRECTUS_SERVER_URL}/assets/${assetId}`);
+					assetUrl.search = new URLSearchParams({
+						access_token: DIRECTUS_ACCESS_TOKEN,
+					}).toString();
+					const assetResponse = await fetch(assetUrl);
+					if (assetResponse.status === 200) {
+						await Assets.write(assetId, await assetResponse.body);
+					}
 				}
 			}
+		};
+
+		for (const path of preset.file_paths) {
+			await checkAssetRecursive(result, path);
 		}
 	}
 }
