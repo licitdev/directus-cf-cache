@@ -1,6 +1,8 @@
 module.exports = {
 	name: 'directus-cf-cache-worker',
-	profile: 'default',
+	zoneid: process.env.CLOUDFLARE_ZONEID,
+	accountid: process.env.CLOUDFLARE_ACCOUNTID,
+	token: process.env.CLOUDFLARE_TOKEN,
 	entry: 'index.ts',
 	routes: process.env.WORKER_ROUTES.split(',').filter((route) => route),
 	globals: {
