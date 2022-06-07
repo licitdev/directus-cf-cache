@@ -27,5 +27,6 @@ jobs:
             DIRECTUS_ACCESS_TOKEN: ${{ secrets.DIRECTUS_ACCESS_TOKEN }}
             DIRECTUS_CF_CACHE_KV: ${{ secrets.DIRECTUS_CF_CACHE_KV }}
             DIRECTUS_SERVER_URL: ${{ secrets.DIRECTUS_SERVER_URL }}
+            DIRECTUS_WEBHOOK_SECRET: ${{ secrets.DIRECTUS_WEBHOOK_SECRET }}
             WORKER_ROUTES: ${{ secrets.WORKER_ROUTES }}
       - run: npm run deploy

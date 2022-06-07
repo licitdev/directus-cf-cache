@@ -7,13 +7,14 @@ declare global {
 	const DIRECTUS_SERVER_URL: string;
 	const DIRECTUS_ACCESS_TOKEN: string;
 	const DIRECTUS_CF_CACHE_KV: KV.Namespace;
+	const DIRECTUS_WEBHOOK_SECRET: string;
 }
 
 const API = new Router();
 
 API.prepare = CORS.preflight({
 	origin: '*',
-	headers: ['Cache-Control', 'Content-Type'],
+	headers: ['Cache-Control', 'Content-Type', 'Secret'],
 	methods: ['HEAD', 'GET', 'POST'],
 	maxage: 600,
 });

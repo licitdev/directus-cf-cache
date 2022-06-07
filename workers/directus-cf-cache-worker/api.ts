@@ -271,6 +271,10 @@ export const getAsset: Handler = async function (req, res) {
  * POST /webhook
  */
 export const webhook: Handler = async function (req, res) {
+	if (!req.headers.get('Secret') || req.headers.get('Secret') !== DIRECTUS_WEBHOOK_SECRET) {
+		return res.send(403, { message: 'Unauthorized.' });
+	}
+
 	if (!req.body || !req.headers.has('Content-Type') || req.headers.get('Content-Type') !== 'application/json') {
 		return res.send(400, { message: 'Invalid webhook request.' });
 	}
