@@ -16,6 +16,10 @@ const routes = [
 		component: Articles,
 	},
 	{
+		path: '/articles/:key',
+		component: Articles,
+	},
+	{
 		path: '/article/:pk',
 		component: Article,
 	},
