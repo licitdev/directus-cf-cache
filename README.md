@@ -107,18 +107,18 @@ Create a [Fork](https://github.com/licitdev/directus-cf-cache/fork) of this GitH
     3. Add a new request header `Secret` with your **secret** and copy this value somewhere.
     4. Toggle all actions to be turned on (create, update, delete).
     5. Select the collections that you wish to cache including `Cf Cache Options`
-14. Head over to Settings > Roles & Permissions
+15. Head over to Settings > Roles & Permissions
     1. Create a new role and uncheck `App Access`.
     2. Allow `All Access` for `Read` column of the tables you wish to cache including `cf_cache_options`
     3. Create a new user, enter a secure **token** and copy this value somewhere.
     4. Save all changes.
-15. Head over to Content > Cf Cache Options and configure your required caching settings.
+16. Head over to Content > Cf Cache Options and configure your required caching settings.
     > **Demo `cf_cache_options` configuration**
-    > 
+    >
     > ![image](https://user-images.githubusercontent.com/26413686/172445743-18156d31-54c7-4b79-8d71-9cf91c8253e0.png)
-    > 
+    >
     > **Demo `preset_requests` configuration**
-    > 
+    >
     > ![image](https://user-images.githubusercontent.com/26413686/172446025-98593f2c-367a-4229-babb-c2ea0a25475e.png)
 
 ### Set up Cloudflare Pages
