@@ -98,7 +98,10 @@ Create a [Fork](https://github.com/licitdev/directus-cf-cache/fork) of this GitH
     3. Continue in advanced field creation mode.
     4. Click on `Relationship` and set the sort field as `sort` to enable sorting.
     5. Skip the configuration of other parameters and save.
-13. Head over to Settings > Webhooks
+13. Head over to Settings > Data Model
+    1. Click on the kebab menu of `global_query_params`.
+    2. Select Make Collection Hidden.
+14. Head over to Settings > Webhooks
     1. Create a new webhook and give it a name.
     2. Set the URL as your Cloudflare Worker webhook endpoint.
     3. Add a new request header `Secret` with your **secret** and copy this value somewhere.
@@ -110,6 +113,13 @@ Create a [Fork](https://github.com/licitdev/directus-cf-cache/fork) of this GitH
     3. Create a new user, enter a secure **token** and copy this value somewhere.
     4. Save all changes.
 15. Head over to Content > Cf Cache Options and configure your required caching settings.
+    > **Demo `cf_cache_options` configuration**
+    > 
+    > ![image](https://user-images.githubusercontent.com/26413686/172445743-18156d31-54c7-4b79-8d71-9cf91c8253e0.png)
+    > 
+    > **Demo `preset_requests` configuration**
+    > 
+    > ![image](https://user-images.githubusercontent.com/26413686/172446025-98593f2c-367a-4229-babb-c2ea0a25475e.png)
 
 ### Set up Cloudflare Pages
 
