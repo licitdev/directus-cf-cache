@@ -20,6 +20,16 @@ export const listItems: Handler = async function (req, res) {
 
 	const { collection, key } = req.params;
 
+	const preset = cfCacheOptions.preset_requests.find(
+		(p: PresetRequest) => p.collection === collection && p.key === (key ?? null) && p.operation === 'list'
+	);
+
+	if (!preset) {
+		return res.send(400, { message: 'Unable to find preset.' });
+	} else if (!preset.enabled) {
+		return res.send(400, { message: 'Preset is disabled.' });
+	}
+
 	const readKV = async () => {
 		const { collection, key } = req.params;
 		const data = await Items.read(collection, key ?? '', '');
@@ -28,12 +38,6 @@ export const listItems: Handler = async function (req, res) {
 	};
 
 	const fetchOrigin = async () => {
-		const preset = cfCacheOptions.preset_requests.find(
-			(p: PresetRequest) => p.collection === collection && p.key === (key ?? null) && p.operation === 'list'
-		);
-
-		if (!preset) return null;
-
 		if (preset.query_params['filter']) {
 			preset.query_params['filter'] = JSON.stringify(preset.query_params['filter']);
 		}
@@ -112,6 +116,16 @@ export const getItem: Handler = async function (req, res) {
 
 	const { collection, key, pk } = req.params;
 
+	const preset = cfCacheOptions.preset_requests.find(
+		(p: PresetRequest) => p.collection === collection && p.key === (key ?? null) && p.operation === 'get'
+	);
+
+	if (!preset) {
+		return res.send(400, { message: 'Unable to find preset.' });
+	} else if (!preset.enabled) {
+		return res.send(400, { message: 'Preset is disabled.' });
+	}
+
 	const readKV = async () => {
 		const { collection, key } = req.params;
 		const data = await Items.read(collection, key ?? '', pk);
@@ -120,12 +134,6 @@ export const getItem: Handler = async function (req, res) {
 	};
 
 	const fetchOrigin = async () => {
-		const preset = cfCacheOptions.preset_requests.find(
-			(p: PresetRequest) => p.collection === collection && p.key === (key ?? null) && p.operation === 'get'
-		);
-
-		if (!preset) return null;
-
 		if (preset.query_params['filter']) {
 			preset.query_params['filter'] = JSON.stringify(preset.query_params['filter']);
 		}
