@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
+      - master
       - deploy
     paths:
       - app/**
@@ -14,6 +15,9 @@ defaults:
 
 jobs:
   deploy:
+    if: |
+      github.ref_name == 'deploy'
+        || (github.ref_name == 'master' && github.repository == 'licitdev/directus-cf-cache')
     runs-on: ubuntu-latest
     name: Deploy Page
     steps:
