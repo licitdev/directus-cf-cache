@@ -23,6 +23,8 @@
 		<h3>
 			Source code and more information can be found in
 			<a href="https://github.com/licitdev/directus-cf-cache">GitHub</a>.
+			<br />
+			Developed by <a href="https://github.com/licitdev" target="_blank">licitdev</a>.
 		</h3>
 	</div>
 </template>
