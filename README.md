@@ -35,6 +35,8 @@ Cache and limit direct access to the data managed on your [Directus](https://dir
 
 4. Check out your updates at [https://directus-cf-cache.pages.dev](https://directus-cf-cache.pages.dev/).
 
+https://user-images.githubusercontent.com/26413686/172551155-2adc79e7-fcef-43c0-b46a-2f69667cfa80.mov
+
 ## Cloudflare Features Used
 
 ### Cloudflare Workers
